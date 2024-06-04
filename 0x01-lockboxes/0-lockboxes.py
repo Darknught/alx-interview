@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+""" Function that defines lockboxes"""
+
+
 def canUnlockAll(boxes):
     """
     Determine if all boxes can be unlocked.
