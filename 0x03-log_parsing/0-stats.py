@@ -25,7 +25,9 @@ from collections import defaultdict
 
 # Define the regular expression pattern for the log format
 log_pattern = re.compile(
-    r'(\d{1,3}\.){3}\d{1,3} - \[(.*?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)'
+    r'(\d{1,3}\.){3}\d{1,3} - \['
+    r'(.*?)\] "GET \/projects\/260 HTTP\/1\.1" '
+    r'(\d{3}) (\d+)'
 )
 
 # Initialize variables for storing metrics
