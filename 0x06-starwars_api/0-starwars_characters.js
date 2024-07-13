@@ -12,25 +12,30 @@ function fetchMovie (movieId) {
       return console.error('Error:', err);
     }
 
-    const movieTitle = body.title;
     const characters = body.characters;
-
-    console.log(`Characters in "${movieTitle}":`);
     fetchCharacters(characters);
   });
 }
 
-// Function to fetch character names
+// Function to fetch character names in order
 function fetchCharacters (characterUrls) {
-  characterUrls.forEach(url => {
-    request(url, { json: true }, (err, res, body) => {
-      if (err) {
-        return console.error('Error:', err);
-      }
-
-      console.log(body.name);
+  const characterPromises = characterUrls.map(url => {
+    return new Promise((resolve, reject) => {
+      request(url, { json: true }, (err, res, body) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(body.name);
+      });
     });
   });
+
+  // Wait for all character names to be fetched and then print them in order
+  Promise.all(characterPromises)
+    .then(characterNames => {
+      characterNames.forEach(name => console.log(name));
+    })
+    .catch(err => console.error('Error:', err));
 }
 
 // Get the movie ID from command-line arguments
