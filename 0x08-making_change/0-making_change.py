@@ -4,35 +4,43 @@
 
 def makeChange(coins, total):
     """
-    Determines the fewest number of coins needed to meet a given total amount.
+    Determine the fewest number of coins needed to meet a given total amount.
 
     Parameters:
-    coins (list): A list of integers representing the denominations
-    of the coins.
-    total (int): The total amount to be formed using the fewest number
+    coins (list): A list of integers representing the values of the coins in
+    your possession.
+    total (int): The total amount you want to achieve with the fewest number
     of coins.
 
     Returns:
     int: The fewest number of coins needed to meet the total.
-         Returns 0 if the total is 0 or less.
-         Returns -1 if the total cannot be met by any number of coins.
+         If the total is 0 or less, returns 0.
+         If the total cannot be met by any number of coins, returns -1.
     """
-
-    # If total is 0 or negative, no coins are needed
     if total <= 0:
         return 0
 
-    # Initialize the dp array with infinity, as we are looking for the minimum
+    # Remove duplicates and sort coins (sorting may help in some cases)
+    coins = sorted(set(coins))
+
+    # If the smallest coin is greater than total, we cannot make the total
+    if coins[0] > total:
+        return -1
+
+    # Initialize dp array with a large number (inf)
     dp = [float('inf')] * (total + 1)
     dp[0] = 0  # Base case: 0 coins are needed to make a total of 0
 
-    # Iterate over each amount from 1 to total
+    # Iterate through each amount from 1 to total
     for t in range(1, total + 1):
         # Check each coin denomination
         for coin in coins:
             if coin <= t:
-                # If coin can be used, update dp[t] to the minimum coins needed
+                # Update the dp array with the minimum number of coins needed
                 dp[t] = min(dp[t], dp[t - coin] + 1)
+            else:
+                # Since the coins are sorted, no need to check further
+                break
 
-    # If dp[total] is still infinity, it means the total cannot be formed
+    # If dp[total] is still inf, it means the total cannot be met
     return dp[total] if dp[total] != float('inf') else -1
