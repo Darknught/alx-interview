@@ -19,21 +19,17 @@ def makeChange(coins, total):
     """
     if total <= 0:
         return 0
-
-    # Sort the coin denominations in descending order
-    coins.sort(reverse=True)
-
-    # Initialize dp array with a large number (inf)
-    dp = [float('inf')] * (total + 1)
-    dp[0] = 0  # Base case: 0 coins are needed to make a total of 0
-
-    # Iterate through each amount from 1 to total
-    for t in range(1, total + 1):
-        # Check each coin denomination
-        for coin in coins:
-            if coin <= t:
-                # Update the dp array with the minimum number of coins needed
-                dp[t] = min(dp[t], dp[t - coin] + 1)
-
-    # If dp[total] is still inf, it means the total cannot be met with
-    return dp[total] if dp[total] != float('inf') else -1
+    rem = total
+    coins_count = 0
+    coin_idx = 0
+    sorted_coins = sorted(coins, reverse=True)
+    n = len(coins)
+    while rem > 0:
+        if coin_idx >= n:
+            return -1
+        if rem - sorted_coins[coin_idx] >= 0:
+            rem -= sorted_coins[coin_idx]
+            coins_count += 1
+        else:
+            coin_idx += 1
+    return coins_count
