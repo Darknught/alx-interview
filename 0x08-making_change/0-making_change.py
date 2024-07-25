@@ -14,11 +14,14 @@ def makeChange(coins, total):
 
     Returns:
     int: The fewest number of coins needed to meet the total.
-         If the total is 0 or less, returns 0.
+         If the total is 0, returns 0.
          If the total cannot be met by any number of coins, returns -1.
     """
     if total <= 0:
         return 0
+
+    # Sort the coin denominations in descending order
+    coins.sort(reverse=True)
 
     # Initialize dp array with a large number (inf)
     dp = [float('inf')] * (total + 1)
